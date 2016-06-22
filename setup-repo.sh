@@ -57,6 +57,9 @@ function symlink_clang_format() {
   $(ln -sf "$DIR/.clang-format" ".clang-format")
 }
 
+function copy_hooks() {
+  $(cp -rf "$DIR/hooks/" ".git/hooks/" )
+}
 
-ensure_pre_commit_file_exists && ensure_pre_commit_file_is_executable && ensure_hook_is_installed && ensure_git_ignores_clang_format_file && symlink_clang_format
+ensure_pre_commit_file_exists && ensure_pre_commit_file_is_executable && ensure_hook_is_installed && ensure_git_ignores_clang_format_file && symlink_clang_format && copy_hooks
 

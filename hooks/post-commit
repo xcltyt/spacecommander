@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# 输出消息
+echo "commit success ！！"
