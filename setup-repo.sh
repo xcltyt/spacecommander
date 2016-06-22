@@ -50,6 +50,7 @@ function ensure_git_ignores_clang_format_file() {
   grep -q ".clang-format" ".gitignore"
   if [ $? -gt 0 ]; then
     echo ".clang-format" >> ".gitignore"
+    echo "spacecommander" >> ".gitignore"
   fi
 }
 
