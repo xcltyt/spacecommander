@@ -3,14 +3,11 @@
 import sys, os, re
 from subprocess import check_output
 
-# 收集参数
 commit_msg_filepath = sys.argv[1]
 
-# 检测所在的分支
 branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
 print "commit-msg: On branch '%s'" % branch
 
-# 检测提交信息，判断是否是一个issue提交
 if branch.startswith('issue-'):
     print "commit-msg: Oh hey, it's an issue branch."
     result = re.match('issue-(.*)', branch)

@@ -3,7 +3,6 @@
 import sys, os, re
 from subprocess import check_output
 
-# 收集参数
 commit_msg_filepath = sys.argv[1]
 if len(sys.argv) > 2:
     commit_type = sys.argv[2]
@@ -16,11 +15,10 @@ else:
 
 print "prepare-commit-msg: File: %s\nType: %s\nHash: %s" % (commit_msg_filepath, commit_type, commit_hash)
 
-# 检测我们所在的分支
 branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
 print "prepare-commit-msg: On branch '%s'" % branch
 
-# 用issue编号生成提交信息
+
 if branch.startswith('issue-'):
     print "prepare-commit-msg: Oh hey, it's an issue branch."
     result = re.match('issue-(.*)', branch)
