@@ -50,6 +50,11 @@ function ensure_git_ignores_clang_format_file() {
   grep -q ".clang-format" ".gitignore"
   if [ $? -gt 0 ]; then
     echo ".clang-format" >> ".gitignore"
+  fi
+}
+function ensure_git_ignores_spacecommander_file() {
+  grep -q "spacecommander" ".gitignore"
+  if [ $? -gt 0 ]; then
     echo "spacecommander" >> ".gitignore"
   fi
 }
@@ -62,5 +67,5 @@ function copy_hooks() {
   $(cp -rf "$DIR/hooks/" ".git/hooks/" )
 }
 
-ensure_pre_commit_file_exists && ensure_pre_commit_file_is_executable && ensure_hook_is_installed && ensure_git_ignores_clang_format_file && symlink_clang_format && copy_hooks
+ensure_pre_commit_file_exists && ensure_pre_commit_file_is_executable && ensure_hook_is_installed && ensure_git_ignores_clang_format_file && symlink_clang_format && ensure_git_ignores_spacecommander_file && copy_hooks
 
