@@ -17,10 +17,10 @@ AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: false
 AllowShortIfStatementsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
-AllowShortLoopsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
 
 AlwaysBreakAfterDefinitionReturnType: false
 AlwaysBreakTemplateDeclarations: false
