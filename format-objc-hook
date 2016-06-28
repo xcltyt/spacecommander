@@ -19,8 +19,16 @@ objc_files=$(objc_files_to_format "$1")
 function format_objc() {
   success=0
   for file in $objc_files; do
+     echo "'$file'"
+
+     $(cp "$file" "$file.cache")
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
   
+    $("$DIR"/Format-objc-file.sh "$file.cache")
+    diff -c "$file" "$file.cache" 
+     $(rm -f  "$file.cache")
+
+
     if [ $difference -gt 0 ]; then
         if [ $success -eq 0 ]; then
             echo -e "\n\033[31mFormatOne : Format and stage individual files:\033[0m"
