@@ -25,7 +25,7 @@ function format_objc() {
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
   
     $("$DIR"/Format-objc-file.sh "$file.cache")
-    diff -c "$file" "$file.cache" 
+    diff -u "$file" "$file.cache" 
      $(rm -f  "$file.cache")
 
 
