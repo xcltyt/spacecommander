@@ -20,23 +20,23 @@ function format_objc() {
   success=0
   for file in $objc_files; do
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
-	
+  
     if [ $difference -gt 0 ]; then
         if [ $success -eq 0 ]; then
-            echo -e "1. Format and stage individual files:"
+            echo -e "\n\033[31mFormatOne : Format and stage individual files:\033[0m"
         fi
-    	# This is what the dev can run to fixup an individual file
-    	echo "\"$DIR\"/format-objc-file.sh '$file' && git add '$file';"
-    	success=1
+      # This is what the dev can run to fixup an individual file
+      echo "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';"
+      success=1
     fi
   done
   if [ $success -gt 0 ]; then
-      echo -e "\n 2.  Format and stage all affected files:\n\t \"$DIR\"/format-objc-files.sh -s"
+      echo -e "\n\033[31mFormatTwo :  Format and stage all affected files:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
   fi
   return $success 
 }
 
 success=0
-format_objc || (echo -e "\nt ip-one:  There were formatting issues with this commit, run the👆 above👆 command to fix.\n tip-two:  Commit anyway and skip this check by running git commit --no-verify" && success=1)
+format_objc || (echo -e "\n\033[31mTip-one :\033[0m  There were formatting issues with this commit, run the👆 above👆 command to fix.\n\033[31mTip-two :\033[0m  Commit anyway and skip this check by running git commit --no-verify" && success=1)
 
 exit $success
