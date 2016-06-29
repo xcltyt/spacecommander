@@ -19,31 +19,31 @@ objc_files=$(objc_files_to_format "$1")
 function format_objc() {
   success=0
   for file in $objc_files; do
-     echo "'$file'"
-
 
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
 
     if [ $difference -gt 0 ]; then
-        if [ $success -eq 0 ]; then
-            echo -e "\n\033[31mFormatOne : Format and stage individual files:\033[0m"
-        fi
-      # This is what the dev can run to fixup an individual file
-      echo "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';"
 
-    #后台处理 文件处理 文件对比
-     $(cp "$file" "$file.format") 
-     if [ ! -e "$file.format" ]; then
-       $("$DIR"/Format-objc-file.sh "$file.format")
-       diff -u "$file" "$file.format" 
-       $(rm -f  "$file.format")
-     fi
+      #后台处理 文件处理 文件对比
+       $(cp "$file" "$file.format") 
+       if [ -e "$file.format" ]; then
+         $("$DIR"/Format-objc-file.sh "$file.format")
+         echo -e "\033[32m---------------------- fileNeedToFormat : '$file' start -------------------------------\033[0m\n"
+         diff -c "$file" "$file.format" 
+         $(rm -f  "$file.format")
+         echo -e "\033[32m---------------------- fileNeedToFormat : '$file' end -------------------------------\033[0m\n"
+       fi
+      # if [ $success -eq 0 ]; then
+          echo -e "\n\033[31mFormat-One : Format and stage individual files:\033[0m"
+      # fi
+      # This is what the dev can run to fixup an individual file
+      echo -e "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';\n"
 
       success=1
     fi
   done
   if [ $success -gt 0 ]; then
-      echo -e "\n\033[31mFormatTwo :  Format and stage all affected files:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
+      echo -e "\033[31mFormat-ALL :  Format and stage all affected files:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
   fi
   return $success 
 }
