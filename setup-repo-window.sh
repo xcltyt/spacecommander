@@ -10,12 +10,14 @@ pre_commit_file='.git/hooks/pre-commit';
 
 function ensure_pre_commit_file_exists() {
   if [ -e "$pre_commit_file" ]; then
-    return 0
+    # return 0
+      $(rm -rf "$pre_commit_file")
   fi 
   # It's a symlink
   if [ -h "$pre_commit_file" ]; then
-    pre_commit_file=$(readlink "$pre_commit_file")
-    return 0
+    # pre_commit_file=$(readlink "$pre_commit_file")
+    # return 0
+      $(rm -rf "$pre_commit_file")
   fi 
 
   if [ -d ".git" ]; then
