@@ -53,9 +53,9 @@ function ensure_git_ignores_clang_format_file() {
   fi
 }
 function ensure_git_ignores_spacecommander_file() {
-  grep -q "spacecommander-1" ".gitignore"
+  grep -q "spacecommander" ".gitignore"
   if [ $? -gt 0 ]; then
-    echo "spacecommander-1" >> ".gitignore"
+    echo "spacecommander" >> ".gitignore"
   fi
 }
 
