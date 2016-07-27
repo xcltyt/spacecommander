@@ -8,16 +8,19 @@ export CDPATH=""
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 pre_commit_file='.git/hooks/pre-commit';
 
+pre_commit_bind_file='.git/hooks/pre-commit.bind';
 function ensure_pre_commit_file_exists() {
   if [ -e "$pre_commit_file" ]; then
     # return 0
-    $(rm -rf "$pre_commit_file")
+    # $(rm -rf "$pre_commit_file")
+          mv "$pre_commit_file" "$pre_commit_bind_file"
   fi 
   # It's a symlink
   if [ -h "$pre_commit_file" ]; then
     # pre_commit_file=$(readlink "$pre_commit_file")
     # return 0
-    $(rm -rf "$pre_commit_file")
+    # $(rm -rf "$pre_commit_file")
+          mv "$pre_commit_file" "$pre_commit_bind_file"
   fi 
 
   if [ -d ".git" ]; then
@@ -69,5 +72,5 @@ function copy_hooks() {
   $(cp -rf "$DIR/hooks/" ".git/hooks/" )
 }
 
-ensure_pre_commit_file_exists && ensure_pre_commit_file_is_executable && ensure_hook_is_installed && ensure_git_ignores_clang_format_file && symlink_clang_format && ensure_git_ignores_spacecommander_file && copy_hooks
+ensure_pre_commit_file_exists && ensure_pre_commit_file_is_executable && ensure_hook_is_installed && ensure_git_ignores_clang_format_file && symlink_clang_format && ensure_git_ignores_spacecommander_file #&& copy_hooks
 
