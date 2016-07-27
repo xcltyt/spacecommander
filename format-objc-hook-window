@@ -28,11 +28,10 @@ function format_objc() {
        $(cp "$file" "$file.format") 
        if [ -e "$file.format" ]; then
          $("$DIR"/Format-objc-file.sh "$file.format")
-         echo -e "\033[32m---------------------- fileNeedToFormat : '$file' start -------------------------------\033[0m\n"
          # diff -c "$file" "$file.format" 
          vimdiff "$file" "$file.format" < /dev/tty > /dev/tty
+         
          $(rm -f  "$file.format")
-         echo -e "\033[32m---------------------- fileNeedToFormat : '$file' end -------------------------------\033[0m\n"
        fi
       # if [ $success -eq 0 ]; then
           echo -e "\n\033[31mFormat-One : Format and stage individual files:\033[0m"
