@@ -35,7 +35,7 @@ function format_objc() {
          fi
 
          diff -c "$file" "$file.format" > "spacecommander/diff/format.diff"
-         vim "spacecommander/diff/format.diff" < /dev/tty > /dev/tty
+         vim -M "spacecommander/diff/format.diff" < /dev/tty > /dev/tty
          # vimdiff "$file" "$file.format" < /dev/tty > /dev/tty
          $(rm -f  "$file.format")
          echo -e "\033[32m---------------------- fileNeedToFormat : '$file' end -------------------------------\033[0m\n"
