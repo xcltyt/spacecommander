@@ -52,16 +52,12 @@ function ensure_hook_is_installed() {
 }
 
 function ensure_git_ignores_clang_format_file() {
-  grep -q ".clang-format" ".gitignore"
-  if [ $? -gt 0 ]; then
-    echo ".clang-format" >> ".gitignore"
-  fi
+
+  grep -q ".clang-format" ".gitignore" &&  echo "" || echo ".clang-format" >> ".gitignore" 
 }
 function ensure_git_ignores_spacecommander_file() {
-  grep -q "spacecommander" ".gitignore"
-  if [ $? -gt 0 ]; then
-    echo "spacecommander" >> ".gitignore"
-  fi
+
+  grep -q "spacecommander" ".gitignore" &&  echo "" || echo "spacecommander" >> ".gitignore" 
 }
 
 function symlink_clang_format() {
