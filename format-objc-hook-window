@@ -43,7 +43,7 @@ function format_objc() {
       # echo "$single_success"
        # 未成功修改  
       if [ $single_success -eq 0 ]; then
-          echo -e "\n\033[31mFormat-One : Format and stage individual files:\033[0m"
+          echo -e "\n\033[31m>> '$file' did not pass the code check , format it with this:\033[0m"
           echo -e "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';\n"
           let success+=1
        # 成功修改 
