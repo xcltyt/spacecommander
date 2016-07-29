@@ -45,10 +45,9 @@ function format_objc() {
       if [ $single_success -eq 0 ]; then
           echo -e "\n\033[31mFormat-One : Format and stage individual files:\033[0m"
           echo -e "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';\n"
-          success=1
+          let success+=1
        # 成功修改 
       elif [ $single_success -eq 1 ]; then
-         success=0
          $(git add "$file")
          # echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       fi
