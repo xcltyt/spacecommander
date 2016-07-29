@@ -58,9 +58,9 @@ function format_objc() {
   if [ $success -eq 1 ]; then
       echo -e "\033[31mFormat-ALL :  Format and stage all affected files:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
       echo -e "\n\033[31mTip-one :\033[0m  There were formatting issues with this commit, run the👆 above👆 command to fix.\n\033[31mTip-two :\033[0m  Commit anyway and skip this check by running git commit --no-verify"
-  elif [ $success -eq 0 ]; then
+  elif [ $success -eq 0 ] && [ $exit_flag -eq 1 ]; then
       success=0
-      echo -e "\033[32m>> success!!! \033[0m\n"
+      echo -e "\033[32m>> success and you need to commit again !!! \033[0m\n"
       #协助提交掉成功的代码
   fi
 
