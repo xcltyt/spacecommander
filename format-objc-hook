@@ -28,9 +28,9 @@ function format_objc() {
        $(cp "$file" "$file.format") 
        if [ -e "$file.format" ]; then
          $("$DIR"/Format-objc-file.sh "$file.format")
-         echo -e "\033[32m---------------------- fileNeedToFormat : '$file' start -------------------------------\033[0m\n"
+         echo -e "\n\033[32m>> FileNeedToFormat : '$file' \033[0m"
 
-         if [! -d "spacecommander/diff" ]; then
+         if [ ! -d "spacecommander/diff" ]; then
             $(mkdir -p "spacecommander/diff");
          fi
 
@@ -38,10 +38,9 @@ function format_objc() {
          vim -M "spacecommander/diff/format.diff" < /dev/tty > /dev/tty
          # vimdiff "$file" "$file.format" < /dev/tty > /dev/tty
          $(rm -f  "$file.format")
-         echo -e "\033[32m---------------------- fileNeedToFormat : '$file' end -------------------------------\033[0m\n"
        fi
       # if [ $success -eq 0 ]; then
-          echo -e "\n\033[31mFormat-One : Format and stage individual files:\033[0m"
+          echo -e "\n\033[31m>> '$file' did not pass the code check , format it with this:\033[0m"
       # fi
       # This is what the dev can run to fixup an individual file
       echo -e "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';\n"
@@ -50,12 +49,12 @@ function format_objc() {
     fi
   done
   if [ $success -gt 0 ]; then
-      echo -e "\033[31mFormat-ALL :  Format and stage all affected files:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
+      echo -e "\033[31m>> you can format all with this:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
   fi
   return $success 
 }
 
 success=0
-format_objc || (echo -e "\n\033[31mTip-one :\033[0m  There were formatting issues with this commit, run the👆 above👆 command to fix.\n\033[31mTip-two :\033[0m  Commit anyway and skip this check by running git commit --no-verify" && success=1)
+format_objc || (echo -e "\n\033[31m>> tip-one :\033[0m  There were formatting issues with this commit, run the👆 above👆 command to fix.\n\033[31m>> tip-two :\033[0m  Commit anyway and skip this check by running git commit --no-verify\n" && success=1)
 
 exit $success
