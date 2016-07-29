@@ -54,7 +54,7 @@ function format_objc() {
 
     fi
   done
-  if [ $success -eq 1 ]; then
+  if [ $success -gt 1 ]; then
       echo -e "\033[31m>> you can format all with this:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
       echo -e "\n\033[31m>> tip-one :\033[0m  There were formatting issues with this commit, run the👆 above👆 command to fix.\n\033[31m>> tip-two :\033[0m  Commit anyway and skip this check by running git commit --no-verify"
   elif [ $success -eq 0 ] && [ $exit_flag -eq 1 ]; then
