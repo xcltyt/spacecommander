@@ -22,7 +22,8 @@ function format_objc() {
     single_success=0
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
     if [ $difference -gt 0 ]; then
-       echo -e "\033[32m---------------------- fileNeedToFormat : '$file' -------------------------------\033[0m\n"
+      exit_flag=1
+       echo -e "\033[32m>> FileNeedToFormat : '$file' \033[0m\n"
       #后台处理 文件处理 文件对比
        $(cp "$file" "$file.format") 
 
@@ -48,6 +49,7 @@ function format_objc() {
        # 成功修改 
       elif [ $single_success -eq 1 ]; then
          success=0
+         $(git add "$file")
          # echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       fi
 
@@ -58,7 +60,8 @@ function format_objc() {
       echo -e "\n\033[31mTip-one :\033[0m  There were formatting issues with this commit, run the👆 above👆 command to fix.\n\033[31mTip-two :\033[0m  Commit anyway and skip this check by running git commit --no-verify"
   elif [ $success -eq 0 ]; then
       success=0
-      echo -e "\033[32m----success-----\033[0m\n"
+      echo -e "\033[32m>> success!!! \033[0m\n"
+      #协助提交掉成功的代码
   fi
 
 
@@ -66,7 +69,8 @@ function format_objc() {
 }
 #入口
 success=0
+exit_flag=0
 
 format_objc 
 
-exit $success
+exit $exit_flag
