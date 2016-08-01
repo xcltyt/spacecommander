@@ -40,17 +40,17 @@ function format_objc() {
           fi
        fi
 
-      # echo "$single_success"
+       # echo "$single_success"
        # 未成功修改  
-      if [ $single_success -eq 0 ]; then
+       if [ $single_success -eq 0 ]; then
           echo -e "\n\033[31m>> '$file' did not pass the code check , format it with this:\033[0m"
           echo -e "\"$DIR\"/Format-objc-file.sh '$file' && git add '$file';\n"
           let success+=1
        # 成功修改 
-      elif [ $single_success -eq 1 ]; then
-         $(git add "$file")
-         # echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-      fi
+       elif [ $single_success -eq 1 ]; then
+          $(git add "$file")
+       # echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+       fi
 
     fi
   done
