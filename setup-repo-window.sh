@@ -37,6 +37,8 @@ function ensure_pre_commit_file_exists() {
 
 function ensure_pre_commit_file_is_executable() {
   $(chmod +x "$pre_commit_file")
+  codereset=$DIR'/code-reset.sh'
+  $(chmod +x "$codereset")
 }
 
 function ensure_hook_is_installed() {
@@ -63,6 +65,10 @@ function ensure_git_ignores_spacecommander_file() {
 
 function symlink_clang_format() {
   $(ln -sf "$DIR/.clang-format" ".clang-format")
+
+  echo -e "alias codelog='vim spacecommander/code-check.log'" >>~/.bash_profile
+  echo -e "alias codereset='./spacecommander/code-reset.sh'" >>~/.bash_profile
+  $(source ~/.bash_profile)
 }
 
 function copy_hooks() {
