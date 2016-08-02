@@ -24,6 +24,10 @@ function format_objc() {
     if [ $difference -gt 0 ]; then
       exit_flag=1
        echo -e "\033[32m>> FileNeedToFormat : '$file' \033[0m\n"
+       #备份文件
+       file_backup="spacecommander/backup/"${file##*/}
+       $(cp "$file" "$file_backup") 
+       echo "$file"",""$file_backup" >>"spacecommander/code-check.log"
       #后台处理 文件处理 文件对比
        $(cp "$file" "$file.format") 
 
@@ -40,6 +44,7 @@ function format_objc() {
           fi
        fi
 
+       # $(cp "$file_backup" "$file") 
        # echo "$single_success"
        # 未成功修改  
        if [ $single_success -eq 0 ]; then
@@ -51,7 +56,6 @@ function format_objc() {
           $(git add "$file")
        # echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
        fi
-
     fi
   done
   if [ $success -ge 1 ]; then
