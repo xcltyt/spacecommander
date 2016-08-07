@@ -11,22 +11,16 @@ pre_commit_file='.git/hooks/pre-commit';
 pre_commit_bind_file='.git/hooks/pre-commit.bind';
 function ensure_pre_commit_file_exists() {
   if [ -e "$pre_commit_file" ]; then
-    # return 0
-    # $(rm -rf "$pre_commit_file")
           mv "$pre_commit_file" "$pre_commit_bind_file"
   fi 
-  # It's a symlink
   if [ -h "$pre_commit_file" ]; then
-    # pre_commit_file=$(readlink "$pre_commit_file")
-    # return 0
-    # $(rm -rf "$pre_commit_file")
           mv "$pre_commit_file" "$pre_commit_bind_file"
   fi 
 
   if [ -d ".git" ]; then
     $(mkdir -p ".git/hooks");
   elif [ -e ".git" ]; then
-    # grab the git dir from our .git file, listed as 'gitdir: blah/blah/foo'
+
     git_dir=$(grep gitdir .git | cut -d ' ' -f 2)
     pre_commit_file="$git_dir/hooks/pre-commit"
   else
