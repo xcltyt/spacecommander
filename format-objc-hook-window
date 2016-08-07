@@ -9,40 +9,35 @@ IFS=$'\n'
 export CDPATH=""
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$DIR"/lib/common-lib.sh
-
+DIR_BACKUP=$( cd ~/Documents && pwd )
 # 保证 .clang-format 文件存在的情况下再执行
 [ -e ".clang-format" ] || exit 0
 
 objc_files=$(objc_files_to_format "$1")
 [ -z "$objc_files" ] && exit 0
-random=""
-function randstr() {
-  index=0
-  for i in {a..z}; do arr[index]=$i; index=`expr ${index} + 1`; done
-  for i in {0..9}; do arr[index]=$i; index=`expr ${index} + 1`; done
-  for i in {1..20}; do random="$random${arr[$RANDOM%$index]}"; done
-}
+
 function format_objc() {
 
   for file in $objc_files; do
     single_success=0
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
     if [ $difference -gt 0 ]; then
-      exit_flag=1
-       randstr
-       echo -e "\033[32m>> FileNeedToFormat : '$file' \033[0m\n"
-       #备份文件,新建备份文件夹
-       dir_backup="spacecommander/backup/${random}"$randstr
-
+       exit_flag=1
+       #备份
+       dir_backup=$DIR_BACKUP"/codeCheckerCache"
        if [ ! -d $dir_backup ]; then
-        $(mkdir -p "spacecommander/backup/${random}"$randstr);
+        $(mkdir -p $dir_backup);
+        cd $dir_backup && git init
+        cd ${DIR%/*}
+       else
+        file_dir=$dir_backup"/"${file%/*}
+        if [ ! -d $file_dir ]; then
+           $(mkdir -p $file_dir);
+        else 
+           file_backup=$dir_backup"/"$file
+           $(cp "$file" "$file_backup") 
+        fi
        fi
-        #备份文件
-       file_backup="spacecommander/backup/${random}/"${file##*/}
-       $(cp "$file" "$file_backup") 
-        #备份日志
-       datetime=`date "+%Y-%m-%d/%H:%M:%S"`
-       echo $random"&"$datetime"&"$file","$file_backup >>"spacecommander/code-check.log"
 
       #后台处理 文件处理 文件对比
        $(cp "$file" "$file.format") 
