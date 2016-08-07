@@ -1,0 +1,37 @@
+*** hooksDemo/ViewController.m	2016-08-07 14:14:40.000000000 +0800
+--- hooksDemo/ViewController.m.format	2016-08-07 14:18:56.000000000 +0800
+***************
+*** 27,33 ****
+  {
+      //注释
+      [super viewDidLoad];  //注释1
+! [self methodOne:@""]; //注释2
+  
+      [self methodTwoInView:@""]; //注释3
+  }
+--- 27,33 ----
+  {
+      //注释
+      [super viewDidLoad];  //注释1
+!     [self methodOne:@""]; //注释2
+  
+      [self methodTwoInView:@""]; //注释3
+  }
+***************
+*** 44,50 ****
+  
+      while (i > 0) {
+          i--;
+!         j++;}
+  
+  
+      NSLog(@"%@--%@--%d", msg, result, j);
+--- 44,51 ----
+  
+      while (i > 0) {
+          i--;
+!         j++;
+!     }
+  
+  
+      NSLog(@"%@--%@--%d", msg, result, j);
