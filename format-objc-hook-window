@@ -24,24 +24,36 @@ function format_objc() {
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
     if [ $difference -gt 0 ]; then
        exit_flag=1
-       #备份
 
-       if [ ! -d $DIR_BACKUP ]; then
+      #备份
+      #如果备份目录不存在，新建并复制文件过去
+      if [ ! -d $DIR_BACKUP ]; then
         $(mkdir -p $DIR_BACKUP);
+      fi
+
+      if [  -d $DIR_BACKUP ]; then
+        #备份目录初始化git
         cd $DIR_BACKUP && git init
-        cd ${DIR%/*}
-       else
+
         file_dir=$DIR_BACKUP"/"${file%/*}
+        echo $file_dir
+        #判断是否创建仿目录
         if [ ! -d $file_dir ]; then
            $(mkdir -p $file_dir);
-        else 
-           file_backup=$DIR_BACKUP"/"$file
-           $(cp "$file" "$file_backup") 
         fi
+
+        if [  -d $file_dir ]; then        
+           file_backup=$DIR_BACKUP"/"$file
+           pwd
+           #回到原目录
+           cd ${DIR%/*}
+           $(cp  "$file" "$file_backup") 
+        fi
+           cd ${DIR%/*}
        fi
 
       #后台处理 文件处理 文件对比
-       $(cp "$file" "$file.format") 
+       $(cp  "$file" "$file.format") 
 
        if [ -e "$file.format" ]; then
          $("$DIR"/Format-objc-file.sh "$file.format")
@@ -56,8 +68,6 @@ function format_objc() {
           fi
        fi
 
-       # $(cp "$file_backup" "$file") 
-       # echo "$single_success"
        # 未成功修改  
        if [ $single_success -eq 0 ]; then
           echo -e "\n\033[31m>> '$file' did not pass the code check , format it with this:\033[0m"
@@ -66,7 +76,6 @@ function format_objc() {
        # 成功修改 
        elif [ $single_success -eq 1 ]; then
           $(git add "$file")
-       # echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
        fi
     fi
   done
@@ -78,6 +87,7 @@ function format_objc() {
       echo -e "\033[32m>> success and you need to commit again !!! \033[0m\n"
       #协助提交掉成功的代码
   fi
+  #提交备份记录 利用git来保证备份文件的迭代
   datetime=`date "+%Y-%m-%d/%H:%M:%S"`
   cd $DIR_BACKUP && git add . && git commit -m "#Format-Backup-"${datetime}
 
