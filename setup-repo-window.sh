@@ -62,30 +62,12 @@ function ensure_git_ignores_spacecommander_file() {
 
 function symlink_clang_format() {
   $(ln -sf "$DIR/.clang-format" ".clang-format")
-
-  filepath=$( cd ~ && pwd )
-  filepath=$filepath"/.bash_profile"
-
-  # sed -i "" "s/codelog=/g" "$filepath"
-  # cat $filepath | while read myline
-  # do 
-  
-  # #  echo "$myline" | grep -q "codelog="
-  # # if [ $? -eq 0 ]; then
-  # #   echo "xxxxxxxxxxx"
-  # #    sed -i '/'"$myline"'/d' $filepath
-  # # fi
-  #  # if [ $myline =~ "codelog=" ]; then
-
-  #  #   sed -i '/'"$myline"'/d' $filepath
-  #  # fi
-  #  # if [ $myline =~ "codereset=" ]; then
-  #  #   sed -i '/'"$myline"'/d' $filepath
-  #  # fi
-  # done
-  # echo -e "alias codelog='./spacecommander/code-log.sh'" >>~/.bash_profile
-  # echo -e "alias codereset='./spacecommander/code-reset.sh'" >>~/.bash_profile
-  # $(source ~/.bash_profile)
+  #删除之前可能部署的的alias
+  sed -i.bak '/codelog=/d' ~/.bash_profile
+  sed -i.bak '/codereset=/d' ~/.bash_profile
+  echo -e "alias codelog='./spacecommander/code-log.sh'" >>~/.bash_profile
+  echo -e "alias codereset='./spacecommander/code-reset.sh'" >>~/.bash_profile
+  $(source ~/.bash_profile)
 }
 
 function copy_hooks() {
