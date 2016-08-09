@@ -32,6 +32,10 @@ function ensure_pre_commit_file_exists() {
 
 function ensure_pre_commit_file_is_executable() {
   $(chmod +x "$pre_commit_file")
+  codereset=$DIR'/code-reset.sh'
+  $(chmod +x "$codereset")
+  codelog=$DIR'/code-log.sh'
+  $(chmod +x "$codelog")
 }
 
 function ensure_hook_is_installed() {
@@ -56,6 +60,12 @@ function ensure_git_ignores_spacecommander_file() {
 
 function symlink_clang_format() {
   $(ln -sf "$DIR/.clang-format" ".clang-format")
+  #删除之前可能部署的的alias
+  sed -i.bak '/codelog=/d' ~/.bash_profile
+  sed -i.bak '/codereset=/d' ~/.bash_profile
+  echo -e "alias codelog='./spacecommander/code-log.sh'" >>~/.bash_profile
+  echo -e "alias codereset='./spacecommander/code-reset.sh'" >>~/.bash_profile
+  $(source ~/.bash_profile)
 }
 
 function copy_hooks() {
