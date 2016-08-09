@@ -48,6 +48,9 @@ function format_objc() {
            #回到原目录
            cd ${DIR%/*}
            $(cp  "$file" "$file_backup") 
+           #备份日志
+           datetime=`date "+%Y-%m-%d/%H:%M:%S"`
+           echo $datetime"&"$file >>"spacecommander/code-check.log"
         fi
            cd ${DIR%/*}
        fi
@@ -82,7 +85,7 @@ function format_objc() {
     #提交备份记录 利用git来保证备份文件的迭代
   datetime=`date "+%Y-%m-%d/%H:%M:%S"`
   cd $DIR_BACKUP && git add . && git commit -m "#Format-Backup-"${datetime}
-  
+
   return $success 
 }
 
