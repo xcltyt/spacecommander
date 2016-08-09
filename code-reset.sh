@@ -1,19 +1,13 @@
 #!/usr/bin/env bash
 
-filepath=$(cd "$(dirname "$0")"; pwd)
-cat $filepath"/code-check.log" | while read myline
-do 
- echo -e ""
-arr=(${myline//&/ })  
-num=${#arr[@]}   
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR_BACKUP=$( cd ~/Documents && pwd )
 
-for (( i = 0; i < num; i++ )); do
+filePath=$1
+backup_filePath=$DIR_BACKUP"/codeCheckerCache/"$filePath
 
-if [ $i -eq 0 ]; then
-	echo -e "\033[33mformat-time:"${arr[i]}"\033[0m"
-elif [ $i -eq 1 ]; then
-	echo -e "format-file:"${arr[i]}
+if [ -f $filePath ]; then
+	if [  -f $backup_filePath  ]; then
+         $(cp  "$backup_filePath" "$filePath") 
+	fi
 fi
-done 
- echo -e ""
-done
