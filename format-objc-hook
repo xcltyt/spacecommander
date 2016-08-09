@@ -9,7 +9,8 @@ IFS=$'\n'
 export CDPATH=""
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source "$DIR"/lib/common-lib.sh
-
+DIR_BACKUP=$( cd ~/Documents && pwd )
+DIR_BACKUP=$DIR_BACKUP"/codeCheckerCache"
 # Don't do anything unless a .clang-format file exists
 [ -e ".clang-format" ] || exit 0
 
@@ -23,6 +24,33 @@ function format_objc() {
     difference=$("$DIR"/format-objc-file-dry-run.sh "$file" | diff "$file" - | wc -l)
 
     if [ $difference -gt 0 ]; then
+
+      #备份
+      #如果备份目录不存在，新建并复制文件过去
+      if [ ! -d $DIR_BACKUP ]; then
+        $(mkdir -p $DIR_BACKUP);
+      fi
+
+      if [  -d $DIR_BACKUP ]; then
+        #备份目录初始化git
+        cd $DIR_BACKUP && git init
+
+        file_dir=$DIR_BACKUP"/"${file%/*}
+        echo $file_dir
+        #判断是否创建仿目录
+        if [ ! -d $file_dir ]; then
+           $(mkdir -p $file_dir);
+        fi
+
+        if [  -d $file_dir ]; then        
+           file_backup=$DIR_BACKUP"/"$file
+           pwd
+           #回到原目录
+           cd ${DIR%/*}
+           $(cp  "$file" "$file_backup") 
+        fi
+           cd ${DIR%/*}
+       fi
 
       #后台处理 文件处理 文件对比
        $(cp "$file" "$file.format") 
@@ -51,6 +79,10 @@ function format_objc() {
   if [ $success -gt 0 ]; then
       echo -e "\033[31m>> you can format all with this:\033[0m\n\"$DIR\"/format-objc-files.sh -s"
   fi
+    #提交备份记录 利用git来保证备份文件的迭代
+  datetime=`date "+%Y-%m-%d/%H:%M:%S"`
+  cd $DIR_BACKUP && git add . && git commit -m "#Format-Backup-"${datetime}
+  
   return $success 
 }
 
