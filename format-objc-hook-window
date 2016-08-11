@@ -36,7 +36,7 @@ function format_objc() {
         cd $DIR_BACKUP && git init
 
         file_dir=$DIR_BACKUP"/"${file%/*}
-        echo $file_dir
+
         #判断是否创建仿目录
         if [ ! -d $file_dir ]; then
            $(mkdir -p $file_dir);
@@ -44,7 +44,7 @@ function format_objc() {
 
         if [  -d $file_dir ]; then        
            file_backup=$DIR_BACKUP"/"$file
-           pwd
+
            #回到原目录
            cd ${DIR%/*}
            $(cp  "$file" "$file_backup") 
